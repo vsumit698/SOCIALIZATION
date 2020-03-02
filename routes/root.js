@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const userRoute = require('./user');
-const controller = require('../controllers/action');
+const controller = require('../controllers/controller');
+
+
 router.get('/',controller.home);
-router.get('/user',userRoute);
+router.use('/user',userRoute);
 module.exports = router;
