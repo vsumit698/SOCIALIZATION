@@ -6,6 +6,7 @@ router.get('/', passport.checkAuthentication);// displaying user page
 
 router.get('/sign-up',controller.signUp); // displaying sign Up page
 router.get('/sign-in',passport.checkAuthentication); //displaying sign In page
+router.get('/sign-out',controller.deleteSession);
 
 router.post('/create-user',controller.createUser);// used while sign up the user
 

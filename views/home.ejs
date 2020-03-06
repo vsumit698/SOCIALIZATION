@@ -1,5 +1,8 @@
 <link rel="stylesheet" href="/home.css">
-<p id="home">Welcome To Socialization</p>
-<script>
+<p id="home">
+    <h1> Welcome To Socialization </h1>
+    <% if(locals.user){ %>
+        <h2> Hey <%= user.name %> </h2>
+    <% } %>
     
-</script>
+</p>

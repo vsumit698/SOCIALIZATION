@@ -1,7 +1,15 @@
 const userModel = require('../models/userModel');
 
+module.exports.deleteSession = function(req,res){
+    req.logout();
+    res.redirect('/user/sign-in');
+}
 
 module.exports.signUp = function(req,res,next){// Sign up Controller
+    if(req.isAuthenticated()){
+        res.redirect('/user');
+        return;
+    }
     res.render('signUp',{title:"Socialization"});
 }
 
@@ -10,7 +18,6 @@ module.exports.signIn = function(req,res,next){//Sign In Controller
 }
 
 module.exports.user = function(req,res,next){ //Displaying user profile
-    
     res.render('user',{title:"Socialization"});
 }
 
@@ -36,6 +43,6 @@ module.exports.createUser = function(req,res,next){ // create user Controller
 }
 
 module.exports.createSession = function(req,res,next){ //create session Controller
-    res.redirect('/user');
+    res.redirect('/'); // taking to the home of Socialization
 }
 

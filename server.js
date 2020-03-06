@@ -7,6 +7,8 @@ const db = require('./config/mongoose');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const passport = require('./config/passport-localStrategy');
+const mongoStore = require('connect-mongo')(expressSession);
+
 
 app.set('view engine','ejs');
 app.set('views','./views');
@@ -24,7 +26,13 @@ app.use(expressSession({
     secret:"findIt",
     saveUninitialized:false,
     resave:false,
-    cookie:{maxAge:60*60*1000}
+    cookie:{maxAge:60*60*1000},
+    store: new mongoStore({
+        mongooseConnection:db,
+        autoRemove:'disabled'
+    },function(err){
+        console.log(err || ("successfuly connected to MongoStore"));
+    })
 }));
 
 app.use(passport.initialize());
