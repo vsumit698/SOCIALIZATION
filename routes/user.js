@@ -1,13 +1,15 @@
 const router = require('express').Router();
 const controller  = require('../controllers/userController');
+const passport = require('../config/passport-localStrategy');
+// root is user now 
+router.get('/', passport.checkAuthentication);// displaying user page
 
-router.get('/',controller.user);
+router.get('/sign-up',controller.signUp); // displaying sign Up page
+router.get('/sign-in',passport.checkAuthentication); //displaying sign In page
 
-router.get('/sign-up',controller.signUp);
-router.get('/sign-in',controller.signIn);
+router.post('/create-user',controller.createUser);// used while sign up the user
 
-router.post('/create-user',controller.createUser);
-router.post('/create-session',controller.createSession);
+router.post('/create-session',passport.authenticate('local',{failureRedirect:'/user/sign-in'}),controller.createSession);// used while sign in the user
 
 
 

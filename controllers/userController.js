@@ -1,16 +1,20 @@
 const userModel = require('../models/userModel');
-module.exports.signUp = function(req,res,next){
-    res.render('signUp',{title:"Social App"});
-}
-module.exports.signIn = function(req,res,next){
-    res.render('signIn',{title:"Social App"});
-}
-module.exports.user = function(req,res,next){
-    res.render('user',{title:"Social App"});
-    next();
+
+
+module.exports.signUp = function(req,res,next){// Sign up Controller
+    res.render('signUp',{title:"Socialization"});
 }
 
-module.exports.createUser = function(req,res,next){
+module.exports.signIn = function(req,res,next){//Sign In Controller
+    res.render('signIn',{title:"Socialization"});
+}
+
+module.exports.user = function(req,res,next){ //Displaying user profile
+    
+    res.render('user',{title:"Socialization"});
+}
+
+module.exports.createUser = function(req,res,next){ // create user Controller
 
     if(req.body.password != req.body.confirmPassword){
         res.redirect('back');
@@ -31,7 +35,7 @@ module.exports.createUser = function(req,res,next){
     });
 }
 
-module.exports.createSession = function(req,res,next){
-    res.send('user successfuly logged in');
+module.exports.createSession = function(req,res,next){ //create session Controller
+    res.redirect('/user');
 }
 
