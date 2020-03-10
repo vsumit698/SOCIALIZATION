@@ -1,4 +1,5 @@
-body{
-    background-color: rgb(241, 207, 207);
-    font-family: cursive;
+body {
+  margin: 0;
+  font-family: cursive;
+  background-color: #f1cfcf;
 }
