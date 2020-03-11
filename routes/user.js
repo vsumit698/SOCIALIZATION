@@ -2,8 +2,10 @@ const router = require('express').Router();
 const controller  = require('../controllers/userController');
 const passport = require('../config/passport-localStrategy');
 // root is user now 
-router.get('/', passport.checkAuthentication);// displaying user page
+//      route is - /user/.....
+router.get('/', passport.checkAuthentication);// displaying user profile page
 
+router.post('/post',controller.createPost);
 router.get('/sign-up',controller.signUp); // displaying sign Up page
 router.get('/sign-in',passport.checkAuthentication); //displaying sign In page
 router.get('/sign-out',controller.deleteSession);

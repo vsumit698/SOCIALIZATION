@@ -2,6 +2,7 @@ const passport  = require('passport');
 
 const LocalStrategy = require('passport-local').Strategy;
 const userModel = require('../models/userModel');
+const postModel = require('../models/postModel');
 
 passport.use(new LocalStrategy(// this is for authenticate the user with the database...
     {usernameField:'email',
@@ -55,6 +56,15 @@ passport.checkAuthentication = function(req, res, next){
 passport.setAuthenticator = function(req,res,next){
     if(req.isAuthenticated()){
         res.locals.user = req.user;
+        var Post;
+        postModel.find({user : req.user._id},function(err,post){
+            if(err) {
+                console.log("error find in finding post",err);
+                return;
+            }
+            Post = post;            
+        });
+        
     }
     next();
 };
