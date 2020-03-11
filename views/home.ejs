@@ -6,7 +6,7 @@
 
         <h4>Create Post</h4>
         <form action="/user/post" method="POST">
-            <textarea name="content" cols="30" rows="5" placeholder="Write your post"></textarea>
+            <textarea name="content" cols="30" rows="5" placeholder="Write your post" required></textarea>
             <button type="submit">POST</button>
         </form>
         <h4>YourPost</h4>
@@ -15,7 +15,36 @@
             <% for(var post of userPost)  {%>
                 <li>
                     <div> <%= post.content %>  </div>
-                    <div>Created At - <%= post.createdAt %>  </div>
+                    <small>
+                        Created At - <%= post.createdAt %>
+                    </small>
+
+                    <!--          Comment Section          -->
+
+                    <div>
+                        <p>Add Comments - </p>
+                        <form action="/user/post/comment" method="POST">
+                            <input type="text" name="content" placeholder="Add Comment Here ..." required> 
+                            <input type="hidden" name="postId" value="<%= post._id%>" >
+                            <button type="submit">Comment</button>
+                        </form>
+                    </div>
+                    
+                    <!--          Comment Listing Section          -->
+                    <div>
+                        <p>Comments on this post</p>
+                        <ol type="i">
+                            <% for(var comment of post.comments) { %> 
+
+                                <li>
+                                    <div> <%= comment.content %>  </div>
+                                    <small>Commented By - <%= comment.user.name %>  </small>
+                                </li>
+    
+                            <% } %>
+                        </ol>
+                    </div>
+
                 </li>
                 <hr>
             <% } %>

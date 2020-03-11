@@ -1,18 +1,21 @@
 const router = require('express').Router();
-const controller  = require('../controllers/userController');
+const userController  = require('../controllers/userController');
 const passport = require('../config/passport-localStrategy');
 // root is user now 
 //      route is - /user/.....
+
+router.use('/post',require('./postCom'));
+
+
 router.get('/', passport.checkAuthentication);// displaying user profile page
 
-router.post('/post',controller.createPost);
-router.get('/sign-up',controller.signUp); // displaying sign Up page
+router.get('/sign-up',userController.signUp); // displaying sign Up page
 router.get('/sign-in',passport.checkAuthentication); //displaying sign In page
-router.get('/sign-out',controller.deleteSession);
+router.get('/sign-out',userController.deleteSession);
 
-router.post('/create-user',controller.createUser);// used while sign up the user
+router.post('/create-user',userController.createUser);// used while sign up the user
 
-router.post('/create-session',passport.authenticate('local',{failureRedirect:'/user/sign-in'}),controller.createSession);// used while sign in the user
+router.post('/create-session',passport.authenticate('local',{failureRedirect:'/user/sign-in'}),userController.createSession);// used while sign in the user
 
 
 

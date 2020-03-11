@@ -1,5 +1,5 @@
 const userModel = require('../models/userModel');
-const postModel = require('../models/postModel');
+
 module.exports.deleteSession = function(req,res){
     req.logout();
     res.redirect('/user/sign-in');
@@ -46,7 +46,4 @@ module.exports.createSession = function(req,res,next){ //create session Controll
     res.redirect('/'); // taking to the home of Socialization
 }
 
-module.exports.createPost = function(req,res){
-    if(req.isAuthenticated()) postModel.create({content:req.body.content,user: req.user._id});
-    res.redirect('back');
-}
+
