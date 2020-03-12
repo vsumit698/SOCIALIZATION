@@ -1,0 +1,7 @@
+<li>
+    <div> <%= comment.content %>  </div>
+    <small>Commented By - <%= comment.user.name %>  </small>
+    <% if(comment.user.id==user.id || post.user.id==user.id){ %> 
+        <small><a href="/user/post/delete-comment/<%= comment.id %> ">Remove</a></small>
+    <% } %> 
+</li>
