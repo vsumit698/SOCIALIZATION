@@ -17,6 +17,6 @@ router.post('/create-user',userController.createUser);// used while sign up the 
 
 router.post('/create-session',passport.authenticate('local',{failureRedirect:'/user/sign-in'}),userController.createSession);// used while sign in the user
 
-
+router.get('/friend-profile/:friendId',userController.friendProfile);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const userModel = require('../models/userModel');
 
-module.exports.deleteSession = function(req,res){
+module.exports.deleteSession = function(req,res){// log-out controler
     req.logout();
     res.redirect('/user/sign-in');
 }
@@ -47,3 +47,12 @@ module.exports.createSession = function(req,res,next){ //create session Controll
 }
 
 
+module.exports.friendProfile = function(req,res){
+    userModel.findById(req.params.friendId,function(err,friend){
+        if(err){
+            console.log("error in finding friend in user Database",error);
+            return;
+        }
+        res.render('userFriend',{title:"Socialization",friend : friend});
+    });
+}

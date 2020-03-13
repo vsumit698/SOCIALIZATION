@@ -1,5 +1,6 @@
 body {
   margin: 0;
   font-family: cursive;
-  background-color: #f1cfcf;
+  background-color: #d3fffd;
+  text-transform: capitalize;
 }

@@ -1,3 +1,22 @@
+#home-section {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 #home {
-  font-size: 1.3rem;
+  width: 70%;
+  font-size: 1.1rem;
+  display: inline-block;
+}
+
+.post-content {
+  color: #ff0e56;
+}
+
+#friends {
+  width: 25%;
+  color: goldenrod;
+  font-size: 20px;
 }
