@@ -6,15 +6,18 @@ const postModel = require('../models/postModel');
 
 passport.use(new LocalStrategy(// this is for authenticate the user with the database...
     {usernameField:'email',
-    passwordField:'password'},
-    function(email,password,done){
+    passwordField:'password',
+    passReqToCallback:true },
+    function(req,email,password,done){
         userModel.findOne({email:email},function(err,user){
             if(err){
                 console.log("error in finding mail of user in DB",err);
+                req.flash('error',err);
                 done(err);
                 return;
             }
             if(!user || user.password!=password){
+                req.flash('error','Invalid Username/ Password');
                 done(null,false);
                 return;
             }
@@ -56,15 +59,7 @@ passport.checkAuthentication = function(req, res, next){
 passport.setAuthenticator = function(req,res,next){
     if(req.isAuthenticated()){
         res.locals.user = req.user;
-        var Post;
-        postModel.find({user : req.user._id},function(err,post){
-            if(err) {
-                console.log("error find in finding post",err);
-                return;
-            }
-            Post = post;            
-        });
-        
+
     }
     next();
 };

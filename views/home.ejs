@@ -8,18 +8,18 @@
         
                 <h4>Create Post</h4>
                 
-                <form action="/user/post" method="POST">
-                    <textarea name="content" cols="30" rows="5" placeholder="Write your post" required></textarea>
+                <form action="/user/post" method="POST" id="post-form">
+                    <textarea name="content" class="post-form-value" cols="30" rows="5" placeholder="Write your post" required></textarea>
                     <button type="submit">POST</button>
                 </form>
                 <h4>YourPost</h4>
         
-                <ol type="1">
+                <ol type="1" id="your-post">
                     <% for(var post of userPost)  {%>
-                        <li>
+                        <li id="<%= post.id %>">
                             <%-include('_postList',{post:post})-%>
         
-                            <!--          Comment Section          -->
+                            <!--          Comment Section (FORM)         -->
         
                             <div>
                                 <p>Add Comments - </p>
@@ -33,7 +33,7 @@
                             <!--          Comment Listing Section          -->
                             <div>
                                 <p>Comments on this post</p>
-                                <ol type="i">
+                                <ol type="i" id="commentList-<%= post.id %>">
                                     <% for(var comment of post.comments) { %> 
         
                                         <%-include('_commList',{comment:comment,post : post})-%>
@@ -41,9 +41,9 @@
                                     <% } %>
                                 </ol>
                             </div>
-        
+                            <hr>
                         </li>
-                        <hr>
+                        
                     <% } %>
                 </ol>
                 
@@ -63,3 +63,4 @@
     </div>
     
 </div>
+<script src="/js/homeEJS.js"></script>

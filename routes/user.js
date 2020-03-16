@@ -19,4 +19,5 @@ router.post('/create-session',passport.authenticate('local',{failureRedirect:'/u
 
 router.get('/friend-profile/:friendId',userController.friendProfile);
 
+router.post('/update-profile',userController.updateProfile);
 module.exports = router;

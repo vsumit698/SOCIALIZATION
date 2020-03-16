@@ -1,11 +1,18 @@
+<h4><a href="/">HOME</a></h4>
 <h4>
     User Name : <%= user.name  %> 
 </h4>
-<h4>
+<h4 style="text-transform: none;">
     Email : <%= user.email  %> 
 </h4>
 <h4>
     Created At : <%= user.createdAt  %> 
 </h4>
 
-<a href="/">HOME</a>
+<h3 style="color: brown;">update your profile</h3>
+
+<form action="/user/update-profile" method="POST">
+    <div><input type="text" name="name" placeholder="new name" required></div> 
+    <div><input type="email" name="email" placeholder="new email" required></div>
+    <button type="submit">UPDATE</button>
+</form>

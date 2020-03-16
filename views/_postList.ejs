@@ -2,15 +2,11 @@
     <span class="post-content">
         <%= post.content %>
     </span>
-    <span>
-        <%  if(user.id === post.user.id) { %>
-            <span>
-                <a href="/user/post/delete-post/<%= post._id%>"><small>Delete Post</small></a>
-            </span>
-        <% } %>  
-    </span>
+    <%  if(user.id === post.user.id) { %>
+        <a href="/user/post/delete-post/<%= post._id%>" class="post-delete"><small>Delete Post</small></a>
+    <% } %> 
 </div>
-<div><small>Author - <%= post.user.name %></small></div>
-<div>
+<div class="post-author"><small>Author - <%= post.user.name %></small></div>
+<div class="post-date">
     <small>Created At - <%= post.createdAt %></small>
 </div>
