@@ -126,7 +126,7 @@ module.exports.deleteComment = async function(req,res){ // using async await fea
                 }
             }
         } catch (error) {
-            req.flash('errro','Error in Deleting Comment');
+            req.flash('error','Error in Deleting Comment');
             console.log("Error Found",error);
         }
     }

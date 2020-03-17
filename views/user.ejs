@@ -1,4 +1,5 @@
 <h4><a href="/">HOME</a></h4>
+<img src="<%= user.avatar%>" alt="<%= user.name%>" width="200px" height="200px">
 <h4>
     User Name : <%= user.name  %> 
 </h4>
@@ -11,8 +12,9 @@
 
 <h3 style="color: brown;">update your profile</h3>
 
-<form action="/user/update-profile" method="POST">
+<form action="/user/update-profile" method="POST" enctype="multipart/form-data">
     <div><input type="text" name="name" placeholder="new name" required></div> 
     <div><input type="email" name="email" placeholder="new email" required></div>
+    <div><input type="file" name="avatar" placeholder="Enter Your Avatar"></div>
     <button type="submit">UPDATE</button>
 </form>

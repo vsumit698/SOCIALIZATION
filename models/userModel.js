@@ -1,4 +1,8 @@
 const mongoose = require('mongoose');
+const multer = require('multer');
+const path = require('path');
+const AVATAR_PATH = path.join('uploads/users/avatar');
+console.log(path.join('./uploads','uploads/users/avatar/avatar-1584453841863'));
 const userSchema = new mongoose.Schema({
     name:{
         type:String,
@@ -12,8 +16,25 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true,
+    },
+    avatar: {
+        type : String
     }
 },{timestamps:true});
+
+
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, path.join(__dirname,'..',AVATAR_PATH));
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now())
+    }
+  });
+   // fieldname belongs to name attribute value in updateProfile form
+userSchema.statics.uploadedAvatar = multer({ storage: storage }).single('avatar');
+userSchema.statics.avatarPath = AVATAR_PATH;
 
 const userModel = mongoose.model('userModel',userSchema);
 module.exports = userModel;

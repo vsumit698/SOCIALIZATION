@@ -27,6 +27,10 @@ app.use(sassMiddleware({
 app.use(expressLayouts);
 app.use(express.urlencoded());
 app.use(express.static('./static'));
+
+app.use('/uploads',express.static('./uploads'));
+app.use('/user/friend-profile/uploads',express.static('./uploads'));
+
 app.use(cookieParser());
 
 app.use(expressSession({

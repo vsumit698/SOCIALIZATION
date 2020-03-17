@@ -1,5 +1,6 @@
 const userModel = require('../models/userModel');
-
+const fs = require('fs');
+const path = require('path');
 
 
 module.exports.signUp = function(req,res,next){// Sign up Controller
@@ -62,22 +63,39 @@ module.exports.friendProfile = function(req,res){
             console.log("error in finding friend in user Database",error);
             return;
         }
+      
         res.render('userFriend',{title:"Socialization",friend : friend});
     });
 }
 
-module.exports.updateProfile = function(req,res){
+module.exports.updateProfile = async function(req,res){
     if(req.isAuthenticated()){
-        userModel.findByIdAndUpdate(req.user.id,req.body,function(err,updatedUser){
-            if(err) {
-                console.log("error in updating user in database",err);
-                req.flash('error','Updation Failed');
-                return;
-            }
-            
-        });
-        // assigning  value to flash object (success)key out of callback function  
-        req.flash('success','Updated Successfuly');
+        try {
+            var user = await userModel.findById(req.user.id);
+
+            userModel.uploadedAvatar(req,res,function(error){
+                if(error){
+                    console.log("error in updating AVATAR******");
+                    return;
+                }
+                user.name = req.body.name;
+                user.email = req.body.email;
+                if(req.file){
+
+                    if(user.avatar){
+                        fs.unlinkSync(path.join(__dirname,'..',user.avatar));
+                    }
+                    user.avatar = userModel.avatarPath +'/' + req.file.filename;
+                    // console.log(req.file);
+                }
+                user.save();
+            });
+            // assigning  value to flash object (success)key out of callback function  
+            req.flash('success','Updated Successfuly');
+        } catch (error) {
+            req.flash('error','Error in Updating Profile');
+            console.log("Error Found",error);
+        }
     }
-    res.redirect('/user');
+    res.redirect('back');
 }
