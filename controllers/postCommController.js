@@ -39,6 +39,16 @@ module.exports.createComment = async function(req,res){
                                                         post : req.body.postId});
                 post.comments.push(comment._id);
                 post.save();
+                await comment.populate('user','name').execPopulate();
+                if(req.xhr){
+                    return res.status(200).json({
+                        data : {
+                            comment:comment
+                        },
+                        message : "comment created !"
+                    });
+                }
+
                 req.flash('success','Successfully Commented');
             }
 
@@ -101,6 +111,17 @@ module.exports.deleteComment = async function(req,res){ // using async await fea
                     }
                     post.save();
                     comment.remove();
+                    
+                    if(req.xhr){
+                        console.log("Comment deleted ......")
+                        return res.status(200).json({
+                            data : {
+                                comment : comment
+                            },
+                            message : "Comment Deleted !"
+                        });
+                    }
+
                     req.flash('success','Successfully Comment Deleted');
                 }
             }

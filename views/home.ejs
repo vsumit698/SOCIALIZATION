@@ -4,7 +4,7 @@
     <div id="home-section">
         <% if(locals.user){ %>
             <div id="home">
-                <h2> Hey <%= user.name %> </h2>
+                <h2> Hey <%= user.name %> !</h2>
         
                 <h4>Create Post</h4>
                 
@@ -23,7 +23,7 @@
         
                             <div>
                                 <p>Add Comments - </p>
-                                <form action="/user/post/comment" method="POST">
+                                <form action="/user/post/comment" method="POST" id="comment-form-<%= post.id%>">
                                     <input type="text" name="content" placeholder="Add Comment Here ..." required> 
                                     <input type="hidden" name="postId" value="<%= post._id%>" >
                                     <button type="submit">Comment</button>
@@ -33,7 +33,7 @@
                             <!--          Comment Listing Section          -->
                             <div>
                                 <p>Comments on this post</p>
-                                <ol type="i" id="commentList-<%= post.id %>">
+                                <ol type="i" id="comment-list-<%= post.id %>">
                                     <% for(var comment of post.comments) { %> 
         
                                         <%-include('_commList',{comment:comment,post : post})-%>

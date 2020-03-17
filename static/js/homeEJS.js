@@ -7,29 +7,90 @@ postForm.submit(function(event){
         url : '/user/post',
         data : postForm.serialize(),
         success : function(response){// this response is already in JSON format
+
             let newPost = editPost(response.data.post);
+            // new post been created here...
             $('#your-post').prepend(newPost);
+
             addNoty('success','Successfully Posted !');
             deletePost($('.post-delete',newPost));
+            var postId = response.data.post._id;
+            var commentForm = $(`#comment-form-${postId}`);
+            createComment(commentForm);
         },
         error : function(error){
             console.log(error.responseText);
         }
     });
 });
-// add ajax request at click event on the previously created posts
 
-let convertPostsToAjax = function(){
-    $('#your-post>li').each(function(){
-        let self = $(this);
-        let deleteLink = $('.post-delete', self);
-        deletePost(deleteLink);
+function createComment(commentForm){// adding ajax call to submit commentForm data
+    commentForm.submit(function(event){
+        event.preventDefault();
 
-        // // get the post's id by splitting the id attribute
-        // let postId = self.prop('id').split("-")[1]
-        // new PostComments(postId);
+        $.ajax({
+            type : 'post',
+            url : commentForm.prop('action'),
+            data : commentForm.serialize(),
+            success : function(response){ 
+                var comment = response.data.comment;
+                var commentJqueryObj = editComment(comment);// returns jquery comment object
+                var commentList = $(`#comment-list-${comment.post}`);
+                commentList.append(commentJqueryObj);
+                addNoty('success','Commented On Post ! ');
+                // add code for deleting comment
+                deleteComment($('.delete-comment',`#${comment._id}`));
+            },
+            error : function(error){
+                console.log("Error Occured ! ",error);
+            }
+        });
     });
 }
+
+function deleteComment(delCommLink){
+    delCommLink.click(function(event){
+        event.preventDefault();
+        $.ajax({
+            type:'get',
+            url : delCommLink.prop('href'),
+            success : function(response){
+                var comment = response.data.comment;
+                $(`#${comment._id}`).remove();
+                addNoty('success','Comment Deleted :)');
+            },
+            error : function(error){
+                console.log("Error Occured ! ",error);
+            }
+        });
+    });
+}
+
+function editComment(comment){
+    return  $(`<li id="${comment._id}">
+                    <div> ${comment.content}</div>
+                    <small>Commented By - ${comment.user.name}</small>
+                    <a href="/user/post/delete-comment/${comment._id}" class="delete-comment">
+                        <small>Remove</small>
+                    </a>
+                </li>`);
+}
+
+let convertPostsToAjax = function(){// add ajax request at click event on the previously created posts
+    $('#your-post>li').each(function(){
+        let post = $(this);
+        let deleteLink = $('.post-delete',post);
+        deletePost(deleteLink);
+        // add ajax request at submit event on the previously created posts 
+        var commentForm = $(`#comment-form-${post.prop('id')}`);
+        createComment(commentForm);
+    });
+    // setting ajax call on previous created comments for deletion
+    $('.delete-comment').each(function(){
+        deleteComment($(this));
+    });
+}
+
 convertPostsToAjax();
 
 // deleteLink is the jQuery Object
@@ -55,7 +116,7 @@ function deletePost(deleteLink){
 
 };
 
-function editPost(post){
+function editPost(post){ // this function returning JQUERY OBJECT
     return $(`<li id="${post._id}">
                 <div> 
                     <span class="post-content">
@@ -72,7 +133,7 @@ function editPost(post){
 
                 <div>
                     <p>Add Comments - </p>
-                    <form action="/user/post/comment" method="POST">
+                    <form action="/user/post/comment" method="POST" id="comment-form-${post._id}">
                         <input type="text" name="content" placeholder="Add Comment Here ..." required> 
                         <input type="hidden" name="postId" value="${ post._id}" >
                         <button type="submit">Comment</button>
@@ -82,7 +143,7 @@ function editPost(post){
                 <!--          Comment Listing Section          -->
                 <div>
                     <p>Comments on this post</p>
-                    <ol type="i" id="commentList-${post._id}">
+                    <ol type="i" id="comment-list-${post._id}">
                         
                     </ol>
                 </div>
