@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
 const AVATAR_PATH = path.join('uploads/users/avatar');
-console.log(path.join('./uploads','uploads/users/avatar/avatar-1584453841863'));
+
 const userSchema = new mongoose.Schema({
     name:{
         type:String,
