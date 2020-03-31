@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const apiController = require('../../../controllers/apiControllers/v1/post_api');
 
-const passport = require('../../../config/passport-JWT');
+const passport = require('passport');
 
 // path is /api/v1/post...
 router.get('/',apiController.displayPost);

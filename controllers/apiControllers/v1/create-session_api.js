@@ -14,7 +14,7 @@ module.exports.createApiSession = async function(req,res){
         }
         return res.status(200).json({
             message : "successfully authenticated by JWT",
-            token : jsonwebtoken.sign(user.toJSON(),'socialization',{expiresIn:'1000000'})
+            token : jsonwebtoken.sign(user.toJSON(),'socialization',{expiresIn:'100000'})
         });
     } catch (error) {
         console.log("Error Found : ",error);

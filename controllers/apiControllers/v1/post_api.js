@@ -12,6 +12,7 @@ module.exports.displayPost = async function(req,res){
 
 module.exports.deletePost = async function(req,res){
     try {
+        console.log("DONE");
         var post = await postModel.findById(req.params.postId);
 
         // req.user.id converts id in to String dataType ,  post.user.toString() converts 

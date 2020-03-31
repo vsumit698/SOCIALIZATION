@@ -11,7 +11,8 @@ const passportLocal = require('./config/passport-localStrategy');
 const passportJWT = require('./config/passport-JWT');
 const mongoStore = require('connect-mongo')(expressSession);
 const sassMiddleware = require('node-sass-middleware');
-const flash = require('connect-flash');
+const flash = require('connect-flash'); // required for flash msg, 
+                                        //to delete the flash msg once used
 
 
 app.set('view engine','ejs');
