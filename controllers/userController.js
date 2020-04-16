@@ -90,6 +90,7 @@ module.exports.updateProfile = async function(req,res){
                 }
                 user.save();
             });
+            
             // assigning  value to flash object (success)key out of callback function  
             req.flash('success','Updated Successfuly');
         } catch (error) {
