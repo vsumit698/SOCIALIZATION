@@ -4,9 +4,9 @@ const googleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const userModel = require('../models/userModel');
 
 passport.use(new googleStrategy({
-    clientID : '200626558260-g29c044k4ps1s4r6g4kadi3pno0i9be7.apps.googleusercontent.com',
-    clientSecret : 'oiZTw3KB0Ey3NK8Sfmd1C1Ep',
-    callbackURL : 'http://localhost:8000/user/auth/google/callback'
+    clientID : '************',
+    clientSecret : '***********',
+    callbackURL : '*****************'
 },function(accessToken,refreshToken,profile,done){
 
     const email = profile.emails[0].value;

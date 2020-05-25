@@ -7,7 +7,7 @@ module.exports.transporter = nodemailer.createTransport({
     secure : false,
     auth : {
         user : 'vsumit698@gmail.com',
-        pass : 'sumit27011998'
+        pass : '*********'
     }
 });
 
