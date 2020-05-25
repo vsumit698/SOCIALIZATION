@@ -45,7 +45,7 @@ module.exports.createUser = function(req,res,next){ // create user Controller
 
 module.exports.createSession = function(req,res,next){ //create session Controller
     // console.log("before Setting",req.flash('success'));
-    req.flash("success","logged in successfuly");
+    req.flash("success","logged in successfuly");// setting msg for success key in flash msg.
     
     res.redirect('/'); // taking to the home of Socialization
    

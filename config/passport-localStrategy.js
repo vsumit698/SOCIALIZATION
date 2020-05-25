@@ -56,7 +56,7 @@ passport.checkAuthentication = function(req, res, next){
 
 
 
-// if user is authenticated then providing user info to the user.ejs to display user profile
+// if user is authenticated then providing user info to the ejs files to display user profile
 passport.setAuthenticator = function(req,res,next){
     if(req.isAuthenticated()){
         res.locals.user = req.user;

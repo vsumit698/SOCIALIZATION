@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const port = 8000;
-const router = require('./routes/home');
 const expressLayouts = require("express-ejs-layouts");
 const db = require('./config/mongoose');
 const cookieParser = require('cookie-parser');
@@ -9,6 +8,7 @@ const expressSession = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-localStrategy');
 const passportJWT = require('./config/passport-JWT');
+const googleAuth = require('./config/passport-google-oauth2.0');
 const mongoStore = require('connect-mongo')(expressSession);
 const sassMiddleware = require('node-sass-middleware');
 const flash = require('connect-flash'); // required for flash msg, 
@@ -58,7 +58,7 @@ app.use(passport.setAuthenticator);
 app.use(flash());
 app.use(require('./config/middle-ware').setFlash);
 
-app.use('/',router);
+app.use('/',require('./routes/home'));
  
 
 app.listen(port,function(error){

@@ -2,7 +2,7 @@ const postModel = require('../../../models/postModel');
 const commentModel = require('../../../models/commentModel');
 
 module.exports.displayPost = async function(req,res){
-    var allPosts = await postModel.find({}).sort('-createdAt').populate('user','name').populate({path:'comments', populate:{path:'user'}});
+    var allPosts = await postModel.find({}).sort('-createdAt').populate('user','name').populate({path:'comments',populate:{path:'user'}});
 
     return res.json(200,{
         message : "done !",

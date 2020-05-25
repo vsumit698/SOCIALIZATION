@@ -1,11 +1,10 @@
 const router = require('express').Router();
 const userController  = require('../controllers/userController');
-const passport = require('../config/passport-localStrategy');
+const passport = require('passport');
 // root is user now 
 //      route is - /user/.....
 
 router.use('/post',require('./postCom'));
-
 
 router.get('/', passport.checkAuthentication);// displaying user profile page
 
@@ -20,4 +19,8 @@ router.post('/create-session',passport.authenticate('local',{failureRedirect:'/u
 router.get('/friend-profile/:friendId',userController.friendProfile);// displaying user friend profile page
 
 router.post('/update-profile',userController.updateProfile);
+
+router.get('/auth/google',passport.authenticate('google',{scope : ['profile','email']}));
+router.get('/auth/google/callback',passport.authenticate('google',{failureRedirect:'/user/sign-in'}),userController.createSession);
+
 module.exports = router;
