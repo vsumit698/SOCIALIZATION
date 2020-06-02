@@ -1,5 +1,7 @@
 const postModel = require('../models/postModel');
 const commentModel = require('../models/commentModel');
+const queue = require('../config/kue');
+const newCommentWorker = require('../workers/commentAlertWorker');
 
 module.exports.createPost = async function(req,res){
     if(req.isAuthenticated()) {
@@ -39,7 +41,17 @@ module.exports.createComment = async function(req,res){
                                                         post : req.body.postId});
                 post.comments.push(comment._id);
                 post.save();
-                await comment.populate('user','name').execPopulate();
+                await comment.populate('user','name email').populate({path:'post',populate:{path:'user',select:'name email'}}).execPopulate();
+
+                // commentMailer.createCommentAlert(comment);
+                var job = await queue.create('commentAlert',comment).save(function(err){
+                    if(err){
+                        console.log('error in creating job ',err);
+                        return;
+                    }
+                    console.log('job created ');
+                });
+
                 if(req.xhr){
                     return res.status(200).json({
                         data : {

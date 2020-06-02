@@ -2,12 +2,9 @@ const passport = require('passport');
 const crypto = require('crypto');
 const googleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const userModel = require('../models/userModel');
+const nodeEnv = require('config');
 
-passport.use(new googleStrategy({
-    clientID : '************',
-    clientSecret : '***********',
-    callbackURL : '*****************'
-},function(accessToken,refreshToken,profile,done){
+passport.use(new googleStrategy(nodeEnv.googleAuth,function(accessToken,refreshToken,profile,done){
 
     const email = profile.emails[0].value;
     const name = profile.displayName;

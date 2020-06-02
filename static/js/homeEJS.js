@@ -35,7 +35,8 @@ function createComment(commentForm){// adding ajax call to submit commentForm da
             success : function(response){ 
                 var comment = response.data.comment;
                 var commentJqueryObj = editComment(comment);// returns jquery comment object
-                var commentList = $(`#comment-list-${comment.post}`);
+                console.log(comment);
+                var commentList = $(`#comment-list-${comment.post._id}`);// comment list of particular postId
                 commentList.append(commentJqueryObj);
                 addNoty('success','Commented On Post ! ');
                 // add code for deleting comment

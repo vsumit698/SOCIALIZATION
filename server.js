@@ -31,8 +31,7 @@ app.use(expressLayouts);
 app.use(express.urlencoded());
 app.use(express.static('./static'));
 
-app.use('/uploads',express.static('./uploads'));
-app.use('/user/friend-profile/uploads',express.static('./uploads'));
+app.use('/uploads',express.static('./uploads'));//which handles all uploaded pictures
 
 app.use(cookieParser());
 
