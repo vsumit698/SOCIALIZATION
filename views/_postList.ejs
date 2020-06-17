@@ -10,3 +10,23 @@
 <div class="post-date">
     <small>Created At - <%= post.createdAt %></small>
 </div>
+<div>
+    <% var matched = false ;%>  
+    <% for(let userId of post.likes) {%>
+        <% if(userId == user.id) {%>
+            <% matched = true; %>
+            <span class="like-button" data-belongid="<%= post._id %>" style="color: red;">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+            <% break; %> 
+        <% } %>  
+    <% } %>  
+    <% if(!matched) {%>
+        <span class="like-button" data-belongid="<%= post._id %>" style="color: white;" %>;">
+            <i class="fas fa-thumbs-up"></i>
+        </span>
+    <% } %>  
+    <span class="like-meter">
+        <%= post.likes.length %> 
+    </span>
+</div>

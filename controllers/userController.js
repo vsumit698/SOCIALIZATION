@@ -1,7 +1,9 @@
 const userModel = require('../models/userModel');
 const fs = require('fs');
 const path = require('path');
-
+const postModel = require('../models/postModel');
+const commentModel = require('../models/commentModel');
+const likeModel = require('../models/likeModel');
 
 module.exports.signUp = function(req,res,next){// Sign up Controller
     if(req.isAuthenticated()){
@@ -99,4 +101,64 @@ module.exports.updateProfile = async function(req,res){
         }
     }
     res.redirect('back');
+}
+
+module.exports.updateLike = async function(req,res){
+    if(req.isAuthenticated()){
+        try {
+            let belongObj = await postModel.findById(req.body.id);
+            if(belongObj){
+                updateLike(belongObj,'postModel',req.user,res);
+                return;
+            }
+            // checking in commentModel
+            belongObj = await commentModel.findById(req.body.id);
+            if(belongObj){
+                // belong obj is comment
+                updateLike(belongObj,'commentModel',req.user,res);
+                return;
+            }
+            
+        } catch (error) {
+            // belong id does not exits in database
+            res.json(200,{
+                message : 'failure'
+            });
+        }
+    }else{
+        res.json(401,{
+            message : 'banned'
+        });
+    }
+}
+
+async function updateLike(belongObject,onModel,loggedInUser,res){
+    // belong object is post,comment
+    let id = 0;
+    for(let userId of belongObject.likes){
+        if(userId == loggedInUser.id){
+            // user already liked post so deleting this like
+            belongObject.likes.splice(id,1);
+            belongObject.save();
+
+            var belongObjectLikes = await likeModel.find({likedOn : belongObject._id});
+            for( let like of belongObjectLikes){
+                if(like.user == loggedInUser.id){
+                    like.remove();
+                    res.json(200,{
+                        message : 'like deleted'
+                    });
+                    return;
+                }
+            }
+        }
+        id++;
+    }
+    // user does not liked post creating like
+    belongObject.likes.push(loggedInUser._id);
+    belongObject.save();
+    await likeModel.create({user : loggedInUser._id,likedOn : belongObject._id,onModel : onModel});
+    res.json(200,{
+        message : 'like added'
+    });
 }

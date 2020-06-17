@@ -6,4 +6,24 @@
             <small>Remove</small>
         </a>
     <% } %> 
+    <div>
+        <% var matched = false ;%>  
+        <% for(let userId of comment.likes) {%>
+            <% if(userId == user.id) {%>
+                <% matched = true; %>
+                <span class="like-button" data-belongid="<%= comment._id %>" style="color: red;">
+                    <i class="fas fa-thumbs-up"></i>
+                </span>
+                <% break; %> 
+            <% } %>  
+        <% } %>  
+        <% if(!matched) {%>
+            <span class="like-button" data-belongid="<%= comment._id %>" style="color: white;">
+                <i class="fas fa-thumbs-up"></i>
+            </span>
+        <% } %>  
+        <span class="like-meter">
+            <%= comment.likes.length %> 
+        </span>
+    </div>
 </li>

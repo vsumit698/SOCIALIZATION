@@ -5,7 +5,7 @@ module.exports.home = async function(req,res){
     // res.clearCookie("user_id");
     if(req.isAuthenticated()){
         try {
-            var post = await postModel.find({}).sort('-createdAt').populate('user').populate({path: 'comments',populate: { path: 'user'}});
+            var post = await postModel.find({}).sort('-createdAt').populate('user','-password').populate({path: 'comments',populate: { path: 'user'}});
     
             var allUsers = await userModel.find({});
 

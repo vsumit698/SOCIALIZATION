@@ -161,6 +161,36 @@ function addNoty(messageType,textData){
         theme : 'relax'
     }).show();
 }
+// adding click event on like button
+
+var buttons = $('.like-button');
+var likeMeters = $('.like-meter');
+var index = 0;
+for(let button of buttons){
+    let likeButton = $(button);
+    let likeMeter = likeMeters[index];
+    likeButton.click(function(){
+        $.ajax({
+            type : 'post',
+            url : '/user/update-like',
+            data : {id : likeButton.data('belongid')},
+            success : function(response){
+                console.log(response);
+                if(response.message == 'like deleted'){
+                    button.style.color = 'white';
+                    likeMeter.innerText = Number(likeMeter.innerText)-1;
+                }else if(response.message == 'like added'){
+                    button.style.color = 'red';
+                    likeMeter.innerText = Number(likeMeter.innerText)+1;
+                }
+            },
+            error : function(error){
+                console.log(error.responseText);
+            }
+        });
+    });
+    index++;
+}
 
 
 // ajax request via plain JS
