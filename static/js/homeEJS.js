@@ -14,6 +14,8 @@ postForm.submit(function(event){
 
             addNoty('success','Successfully Posted !');
             deletePost($('.post-delete',newPost));
+            // adding AJAX call to like button and meter
+            likeAjaxCall($('.like-button',newPost),$('.like-meter',newPost));
             var postId = response.data.post._id;
             var commentForm = $(`#comment-form-${postId}`);
             createComment(commentForm);
@@ -39,6 +41,8 @@ function createComment(commentForm){// adding ajax call to submit commentForm da
                 var commentList = $(`#comment-list-${comment.post._id}`);// comment list of particular postId
                 commentList.append(commentJqueryObj);
                 addNoty('success','Commented On Post ! ');
+                // adding AJAX call to like button and meter on comments
+                likeAjaxCall($('.like-button',commentJqueryObj),$('.like-meter',commentJqueryObj));
                 // add code for deleting comment
                 deleteComment($('.delete-comment',`#${comment._id}`));
             },
@@ -74,6 +78,14 @@ function editComment(comment){
                     <a href="/user/post/delete-comment/${comment._id}" class="delete-comment">
                         <small>Remove</small>
                     </a>
+                    <div>
+                        <span class="like-button" data-belongid="${comment._id}" style="color: white;">
+                            <i class="fas fa-thumbs-up"></i>
+                        </span>
+                        <span class="like-meter">
+                            0 
+                        </span>
+                    </div>
                 </li>`);
 }
 
@@ -129,6 +141,14 @@ function editPost(post){ // this function returning JQUERY OBJECT
                 <div class="post-date">
                     <small>Created At - ${post.createdAt}</small>
                 </div>
+                <div>
+                    <span class="like-button" data-belongid="${post._id}" style="color: white;">
+                        <i class="fas fa-thumbs-up"></i>
+                    </span>
+                    <span class="like-meter">
+                        0 
+                    </span>
+                </div>
 
                 <!--          Comment Section (FORM)         -->
 
@@ -167,8 +187,13 @@ var buttons = $('.like-button');
 var likeMeters = $('.like-meter');
 var index = 0;
 for(let button of buttons){
-    let likeButton = $(button);
-    let likeMeter = likeMeters[index];
+    let likeButton = $(button);// return jQuery Object
+    console.log(likeButton);
+    likeAjaxCall(likeButton,$(likeMeters[index]));
+    index++;
+}
+
+function likeAjaxCall(likeButton,likeMeter){
     likeButton.click(function(){
         $.ajax({
             type : 'post',
@@ -177,11 +202,11 @@ for(let button of buttons){
             success : function(response){
                 console.log(response);
                 if(response.message == 'like deleted'){
-                    button.style.color = 'white';
-                    likeMeter.innerText = Number(likeMeter.innerText)-1;
+                    likeButton.css("color","white");
+                    likeMeter.text(Number(likeMeter.text())-1);
                 }else if(response.message == 'like added'){
-                    button.style.color = 'red';
-                    likeMeter.innerText = Number(likeMeter.innerText)+1;
+                    likeButton.css("color","red");
+                    likeMeter.text(Number(likeMeter.text())+1);
                 }
             },
             error : function(error){
@@ -189,9 +214,7 @@ for(let button of buttons){
             }
         });
     });
-    index++;
 }
-
 
 // ajax request via plain JS
 // var postForm = document.getElementById('post-form');

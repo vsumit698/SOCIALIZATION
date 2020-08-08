@@ -2,6 +2,8 @@ const postModel = require('../models/postModel');
 const commentModel = require('../models/commentModel');
 const queue = require('../config/kue');
 const newCommentWorker = require('../workers/commentAlertWorker');
+const likeModel = require('../models/likeModel');
+
 
 module.exports.createPost = async function(req,res){
     if(req.isAuthenticated()) {
@@ -79,12 +81,16 @@ module.exports.deletePost = async function(req,res){
         try {
             var post = await postModel.findById(req.params.postId);
 
-            // req.user.id converts id in to String dataType ,  post.user.toString() converts 
+            // req.user.id converts ObjectId in to String dataType ,  post.user.toString() converts 
             //                                                  user id in to String Data type
             if(req.user.id == post.user.toString()){
                 post.remove();
                 await commentModel.deleteMany({post : req.params.postId});
-
+                // deleting likes of all comments and posts
+                for(let commentId of post.comments){
+                    await likeModel.deleteMany({likedOn : commentId});
+                }
+                await likeModel.deleteMany({likedOn : post._id});
                 if(req.xhr){
                     return res.status(200).json({
                         data : {
@@ -123,7 +129,10 @@ module.exports.deleteComment = async function(req,res){ // using async await fea
                     }
                     post.save();
                     comment.remove();
-                    
+                    // deleting likes on deleted comment
+                    console.log("**********");
+                    await likeModel.deleteMany({likedOn : comment._id});
+
                     if(req.xhr){
                         console.log("Comment deleted ......")
                         return res.status(200).json({
